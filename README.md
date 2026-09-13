@@ -6,7 +6,7 @@ A clean and responsive scientific calculator built with HTML, CSS, and Python. T
 
 Coming soon: Add your GitHub Pages link here.
 
-https://YOUR-USERNAME.github.io/python-calculator/
+[https://dobidashinde-bit.github.io/calculator/]
 ✨ Features
 🧮 Basic arithmetic
 Addition
