@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Python Scientific Calculator</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Pyodide: runs Python in the browser -->
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.27.2/full/pyodide.js"></script>
+</head>
+
+<body>
+
+    <main class="calculator">
+
+        <!-- Display -->
+        <section class="display">
+            <div class="history" id="history"></div>
+            <div class="screen" id="screen">0</div>
+        </section>
+
+        <!-- Calculator buttons -->
+        <section class="buttons">
+
+            <!-- Row 1 -->
+            <button class="function" id="angle">Deg</button>
+            <button class="function" id="rad">Rad</button>
+            <button class="function" data-value="factorial">x!</button>
+            <button class="function" data-value="(">(</button>
+            <button class="function" data-value=")">)</button>
+            <button class="function" data-value="%">%</button>
+            <button class="clear" id="clear">AC</button>
+
+            <!-- Row 2 -->
+            <button class="function" data-value="inv">Inv</button>
+            <button class="function" data-value="sin">sin</button>
+            <button class="function" data-value="ln">ln</button>
+
+            <button class="number" data-value="7">7</button>
+            <button class="number" data-value="8">8</button>
+            <button class="number" data-value="9">9</button>
+            <button class="operator" data-value="/">÷</button>
+
+            <!-- Row 3 -->
+            <button class="function" data-value="pi">π</button>
+            <button class="function" data-value="cos">cos</button>
+            <button class="function" data-value="log">log</button>
+
+            <button class="number" data-value="4">4</button>
+            <button class="number" data-value="5">5</button>
+            <button class="number" data-value="6">6</button>
+            <button class="operator" data-value="*">×</button>
+
+            <!-- Row 4 -->
+            <button class="function" data-value="e">e</button>
+            <button class="function" data-value="tan">tan</button>
+            <button class="function" data-value="sqrt">√</button>
+
+            <button class="number" data-value="1">1</button>
+            <button class="number" data-value="2">2</button>
+            <button class="number" data-value="3">3</button>
+            <button class="operator" data-value="-">−</button>
+
+            <!-- Row 5 -->
+            <button class="function" data-value="ans">Ans</button>
+            <button class="function" data-value="exp">EXP</button>
+            <button class="function" data-value="power">xʸ</button>
+
+            <button class="number" data-value="0">0</button>
+            <button class="number" data-value=".">.</button>
+
+            <button class="equals" id="equals">=</button>
+
+            <button class="operator" data-value="+">+</button>
+
+        </section>
+
+        <!-- Python loading status -->
+        <div class="python-status" id="status">
+            Loading Python...
+        </div>
+
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+</html>

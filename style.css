@@ -1,0 +1,295 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* =========================
+   WEBSITE
+========================= */
+
+body {
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: #ffffff;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    color: #ffffff;
+}
+
+
+/* =========================
+   CALCULATOR
+========================= */
+
+.calculator {
+    width: min(810px, 95vw);
+
+    padding: 20px;
+
+    background: #18191d;
+
+    border-radius: 4px;
+}
+
+
+/* =========================
+   DISPLAY
+========================= */
+
+.display {
+    height: 90px;
+
+    margin-bottom: 14px;
+
+    padding: 10px 20px;
+
+    background: #303136;
+
+    border-radius: 20px;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+
+    text-align: right;
+
+    overflow: hidden;
+}
+
+
+.history {
+    min-height: 20px;
+
+    color: #8d8f96;
+
+    font-size: 14px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+.screen {
+    color: #ffffff;
+
+    font-size: 38px;
+
+    font-weight: 400;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+/* =========================
+   BUTTON GRID
+========================= */
+
+.buttons {
+    display: grid;
+
+    grid-template-columns:
+        repeat(7, 1fr);
+
+    gap: 5px;
+}
+
+
+/* =========================
+   ALL BUTTONS
+========================= */
+
+button {
+    height: 52px;
+
+    border: none;
+
+    border-radius: 28px;
+
+    font-size: 17px;
+
+    font-weight: 500;
+
+    color: #ffffff;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        transform 0.08s ease;
+}
+
+
+button:active {
+    transform: scale(0.94);
+}
+
+
+/* =========================
+   NUMBER BUTTONS
+========================= */
+
+.number {
+    background: #34353a;
+}
+
+
+.number:hover {
+    background: #414248;
+}
+
+
+/* =========================
+   SCIENTIFIC BUTTONS
+========================= */
+
+.function {
+    background: #292c3a;
+}
+
+
+.function:hover {
+    background: #373a4a;
+}
+
+
+/* =========================
+   OPERATORS
+========================= */
+
+.operator {
+    background: #292c3a;
+
+    font-size: 22px;
+}
+
+
+.operator:hover {
+    background: #373a4a;
+}
+
+
+/* =========================
+   CLEAR BUTTON
+========================= */
+
+.clear {
+    background: #292c3a;
+}
+
+
+.clear:hover {
+    background: #373a4a;
+}
+
+
+/* =========================
+   EQUALS
+========================= */
+
+.equals {
+    background: #3478f6;
+
+    font-size: 20px;
+}
+
+
+.equals:hover {
+    background: #4b89f7;
+}
+
+
+/* =========================
+   PYTHON STATUS
+========================= */
+
+.python-status {
+    margin-top: 12px;
+
+    text-align: center;
+
+    color: #777b85;
+
+    font-size: 12px;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 650px) {
+
+    body {
+        align-items: flex-start;
+
+        padding-top: 20px;
+    }
+
+
+    .calculator {
+        width: 100%;
+
+        padding: 10px;
+    }
+
+
+    .display {
+        height: 80px;
+
+        border-radius: 17px;
+    }
+
+
+    .screen {
+        font-size: 30px;
+    }
+
+
+    button {
+        height: 47px;
+
+        font-size: 14px;
+    }
+
+
+    .operator {
+        font-size: 18px;
+    }
+
+}
+
+
+@media (max-width: 400px) {
+
+    .buttons {
+        gap: 4px;
+    }
+
+
+    button {
+        height: 44px;
+
+        font-size: 13px;
+    }
+
+
+    .screen {
+        font-size: 27px;
+    }
+
+}
