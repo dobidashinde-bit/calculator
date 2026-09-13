@@ -66,7 +66,7 @@ python-calculator/
 
 Clone the repository:
 
-git clone https://github.com/YOUR-USERNAME/python-calculator.git
+git clone (https://dobidashinde-bit.github.io/calculator/)
 
 Open the project:
 
