@@ -1,570 +1,656 @@
-/* =====================================
-   PYTHON CALCULATOR
-===================================== */
+/* =================================
+   MATH BRO CALCULATOR
+================================= */
 
-let pyodide = null;
+
+/* =================================
+   VARIABLES
+================================= */
 
 let expression = "";
 
-let lastAnswer = 0;
+let answer = "0";
 
-let degreeMode = true;
+let history = [];
 
 
-/* =====================================
-   LOAD PYTHON
-===================================== */
+/* =================================
+   FUNNY MESSAGES
+================================= */
 
-async function startPython() {
+const messages = [
 
-    const status = document.getElementById("status");
+    {
+        emoji: "🤨",
+        text: "What are you calculating now?"
+    },
 
-    try {
+    {
+        emoji: "🧐",
+        text: "Interesting... very interesting."
+    },
 
-        pyodide = await loadPyodide();
+    {
+        emoji: "💀",
+        text: "Bro really needs a calculator."
+    },
 
-        status.textContent = "Python ready ✓";
+    {
+        emoji: "🧠",
+        text: "Activating my last brain cell."
+    },
 
-    } catch (error) {
+    {
+        emoji: "😭",
+        text: "Math was a mistake."
+    },
 
-        status.textContent = "Python failed to load";
+    {
+        emoji: "🔥",
+        text: "Okay Einstein, calm down."
+    },
 
-        console.error(error);
+    {
+        emoji: "👀",
+        text: "I'm watching your mathematics."
+    },
+
+    {
+        emoji: "🤖",
+        text: "Beep boop. Numbers detected."
     }
-}
 
-startPython();
+];
 
 
-/* =====================================
-   DISPLAY
-===================================== */
+/* =================================
+   DOM ELEMENTS
+================================= */
+
+const expressionDisplay =
+    document.getElementById("expression");
+
+const answerDisplay =
+    document.getElementById("answer");
+
+const messageDisplay =
+    document.getElementById("message");
+
+const emojiDisplay =
+    document.getElementById("emoji");
+
+const historyList =
+    document.getElementById("historyList");
+
+
+/* =================================
+   UPDATE DISPLAY
+================================= */
 
 function updateDisplay() {
 
-    const screen =
-        document.getElementById("screen");
+    expressionDisplay.textContent =
+        expression || "0";
 
-    if (expression === "") {
-
-        screen.textContent = "0";
-
-    } else {
-
-        screen.textContent = expression;
-    }
+    answerDisplay.textContent =
+        answer;
 }
 
 
-/* =====================================
-   ADD VALUE
-===================================== */
+/* =================================
+   ADD NUMBER
+================================= */
 
-function addValue(value) {
+function appendNumber(number) {
 
-    expression += value;
+    if (number === ".") {
+
+        let parts =
+            expression.split(/[\+\-\*\/%]/);
+
+        let currentNumber =
+            parts[parts.length - 1];
+
+        if (currentNumber.includes(".")) {
+            return;
+        }
+    }
+
+    expression += number;
+
+    answer = expression;
+
+    updateDisplay();
+
+    randomMessage();
+}
+
+
+/* =================================
+   ADD OPERATOR
+================================= */
+
+function appendOperator(operator) {
+
+    if (expression === "") {
+        return;
+    }
+
+    const lastCharacter =
+        expression[expression.length - 1];
+
+    if ("+-*/%".includes(lastCharacter)) {
+
+        expression =
+            expression.slice(0, -1);
+
+    }
+
+    expression += operator;
+
+    answer = expression;
+
+    updateDisplay();
+
+    randomMessage();
+}
+
+
+/* =================================
+   CLEAR
+================================= */
+
+function clearCalculator() {
+
+    expression = "";
+
+    answer = "0";
+
+    updateDisplay();
+
+    setMessage(
+        "🧹",
+        "Everything is gone. Just like your homework."
+    );
+}
+
+
+/* =================================
+   DELETE
+================================= */
+
+function deleteLast() {
+
+    expression =
+        expression.slice(0, -1);
+
+    answer =
+        expression || "0";
 
     updateDisplay();
 }
 
 
-/* =====================================
-   NUMBER BUTTONS
-===================================== */
+/* =================================
+   CALCULATE
+================================= */
 
-document
-    .querySelectorAll(".number")
-    .forEach(button => {
+function calculate() {
 
-        button.addEventListener("click", () => {
-
-            addValue(button.dataset.value);
-
-        });
-
-    });
-
-
-/* =====================================
-   OPERATOR BUTTONS
-===================================== */
-
-document
-    .querySelectorAll(".operator")
-    .forEach(button => {
-
-        button.addEventListener("click", () => {
-
-            addValue(button.dataset.value);
-
-        });
-
-    });
-
-
-/* =====================================
-   SCIENTIFIC FUNCTIONS
-===================================== */
-
-document
-    .querySelectorAll(".function")
-    .forEach(button => {
-
-        button.addEventListener("click", () => {
-
-            const value =
-                button.dataset.value;
-
-            if (!value) {
-                return;
-            }
-
-
-            switch (value) {
-
-                case "sin":
-
-                    addValue("sin(");
-
-                    break;
-
-
-                case "cos":
-
-                    addValue("cos(");
-
-                    break;
-
-
-                case "tan":
-
-                    addValue("tan(");
-
-                    break;
-
-
-                case "sqrt":
-
-                    addValue("sqrt(");
-
-                    break;
-
-
-                case "ln":
-
-                    addValue("ln(");
-
-                    break;
-
-
-                case "log":
-
-                    addValue("log(");
-
-                    break;
-
-
-                case "factorial":
-
-                    addValue("factorial(");
-
-                    break;
-
-
-                case "pi":
-
-                    addValue("pi");
-
-                    break;
-
-
-                case "e":
-
-                    addValue("e");
-
-                    break;
-
-
-                case "ans":
-
-                    addValue(String(lastAnswer));
-
-                    break;
-
-
-                case "exp":
-
-                    addValue("exp(");
-
-                    break;
-
-
-                case "power":
-
-                    addValue("**");
-
-                    break;
-
-
-                case "inv":
-
-                    addValue("1/(");
-
-                    break;
-
-
-                case "(":
-
-                    addValue("(");
-
-                    break;
-
-
-                case ")":
-
-                    addValue(")");
-
-                    break;
-
-
-                case "%":
-
-                    addValue("%");
-
-                    break;
-            }
-
-        });
-
-    });
-
-
-/* =====================================
-   DEGREE MODE
-===================================== */
-
-document
-    .getElementById("angle")
-    .addEventListener("click", () => {
-
-        degreeMode = true;
-
-        document.getElementById("angle")
-            .style.background = "#3478f6";
-
-        document.getElementById("rad")
-            .style.background = "#292c3a";
-
-    });
-
-
-/* =====================================
-   RADIAN MODE
-===================================== */
-
-document
-    .getElementById("rad")
-    .addEventListener("click", () => {
-
-        degreeMode = false;
-
-        document.getElementById("rad")
-            .style.background = "#3478f6";
-
-        document.getElementById("angle")
-            .style.background = "#292c3a";
-
-    });
-
-
-/* =====================================
-   CLEAR
-===================================== */
-
-document
-    .getElementById("clear")
-    .addEventListener("click", () => {
-
-        expression = "";
-
-        document.getElementById("history")
-            .textContent = "";
-
-        updateDisplay();
-
-    });
-
-
-/* =====================================
-   PYTHON CALCULATION
-===================================== */
-
-async function calculateWithPython() {
-
-    const screen =
-        document.getElementById("screen");
-
-    const history =
-        document.getElementById("history");
-
-
-    /* Python hasn't loaded */
-
-    if (!pyodide) {
-
-        screen.textContent =
-            "Python loading...";
-
+    if (!expression) {
         return;
     }
-
-
-    /* Empty expression */
-
-    if (expression.trim() === "") {
-
-        return;
-    }
-
 
     try {
 
-        /*
-         * Send expression to Python.
-         */
+        const lastCharacter =
+            expression[expression.length - 1];
 
-        pyodide.globals.set(
-            "python_expression",
-            expression
-        );
+        if ("+-*/%".includes(lastCharacter)) {
 
-
-        pyodide.globals.set(
-            "python_degree_mode",
-            degreeMode
-        );
+            expression =
+                expression.slice(0, -1);
+        }
 
 
         /*
-         * PYTHON CODE
-         */
+            Function is used here to evaluate
+            the mathematical expression.
+        */
 
-        const pythonCode = `
+        let result =
+            Function(
+                `"use strict"; return (${expression})`
+            )();
 
-import math
 
+        if (!Number.isFinite(result)) {
 
-expression = python_expression
-
-degree_mode = python_degree_mode
-
-
-# -----------------------------
-# Trigonometry
-# -----------------------------
-
-def sin(x):
-
-    if degree_mode:
-
-        x = math.radians(x)
-
-    return math.sin(x)
-
-
-def cos(x):
-
-    if degree_mode:
-
-        x = math.radians(x)
-
-    return math.cos(x)
-
-
-def tan(x):
-
-    if degree_mode:
-
-        x = math.radians(x)
-
-    return math.tan(x)
-
-
-# -----------------------------
-# Scientific functions
-# -----------------------------
-
-def sqrt(x):
-
-    return math.sqrt(x)
-
-
-def ln(x):
-
-    return math.log(x)
-
-
-def log(x):
-
-    return math.log10(x)
-
-
-def factorial(x):
-
-    return math.factorial(int(x))
-
-
-def exp(x):
-
-    return math.exp(x)
-
-
-# -----------------------------
-# Constants
-# -----------------------------
-
-pi = math.pi
-
-e = math.e
-
-
-# -----------------------------
-# Calculate
-# -----------------------------
-
-result = eval(
-
-    expression,
-
-    {
-
-        "__builtins__": {},
-
-        "sin": sin,
-
-        "cos": cos,
-
-        "tan": tan,
-
-        "sqrt": sqrt,
-
-        "ln": ln,
-
-        "log": log,
-
-        "factorial": factorial,
-
-        "exp": exp,
-
-        "pi": pi,
-
-        "e": e
-
-    }
-
-)
-
-
-str(result)
-
-`;
-
-
-        /* Run Python */
-
-        const result =
-            await pyodide.runPythonAsync(
-                pythonCode
+            throw new Error(
+                "Math broke."
             );
+        }
 
 
-        /* Show calculation */
-
-        history.textContent =
-            expression + " =";
-
-
-        /* Show answer */
-
-        screen.textContent =
-            result;
+        result =
+            Math.round(
+                result * 100000000
+            ) / 100000000;
 
 
-        /* Save answer */
+        addHistory(
+            expression,
+            result
+        );
 
-        lastAnswer = result;
+
+        answer =
+            result.toString();
 
 
-        /* Use answer for next calculation */
+        setMessage(
+            "🧠",
+            getSuccessMessage(result)
+        );
 
-        expression = result;
+
+        expression =
+            result.toString();
+
+
+        updateDisplay();
 
 
     } catch (error) {
 
-        screen.textContent =
-            "Error";
+        answer = "ERROR 💀";
 
-        console.error(error);
+        setMessage(
+            "💀",
+            "BROKE MATHEMATICS."
+        );
 
+        shakeCalculator();
     }
-
 }
 
 
-/* =====================================
-   EQUALS BUTTON
-===================================== */
+/* =================================
+   SUCCESS MESSAGES
+================================= */
 
-document
-    .getElementById("equals")
-    .addEventListener(
-        "click",
-        calculateWithPython
+function getSuccessMessage(result) {
+
+    const successMessages = [
+
+        "Calculation survived 🫡",
+
+        "Look at you doing mathematics.",
+
+        "NASA has been notified 🚀",
+
+        "The answer has been summoned.",
+
+        "My last brain cell did it.",
+
+        "Math successfully completed.",
+
+        "Not bad, calculator user.",
+
+        "Congratulations. Numbers survived."
+
+    ];
+
+    if (result === 69) {
+        return "Nice. Very mature. 💀";
+    }
+
+    if (result === 420) {
+        return "Bro... seriously? 🌿";
+    }
+
+    if (result === 0) {
+        return "You calculated NOTHING. 😭";
+    }
+
+    return successMessages[
+        Math.floor(
+            Math.random() *
+            successMessages.length
+        )
+    ];
+}
+
+
+/* =================================
+   RANDOM MESSAGE
+================================= */
+
+function randomMessage() {
+
+    if (Math.random() > 0.7) {
+
+        const random =
+            messages[
+                Math.floor(
+                    Math.random() *
+                    messages.length
+                )
+            ];
+
+        setMessage(
+            random.emoji,
+            random.text
+        );
+    }
+}
+
+
+/* =================================
+   SET MESSAGE
+================================= */
+
+function setMessage(
+    emoji,
+    text
+) {
+
+    emojiDisplay.textContent =
+        emoji;
+
+    messageDisplay.textContent =
+        text;
+}
+
+
+/* =================================
+   ROAST
+================================= */
+
+function roastMe() {
+
+    const roasts = [
+
+        "Bro, you really needed technology for that? 💀",
+
+        "My calculator is disappointed in you.",
+
+        "Even Google would be confused by this.",
+
+        "That's not mathematics. That's a cry for help.",
+
+        "Your math teacher just felt a disturbance.",
+
+        "Respectfully... what are you doing? 😭",
+
+        "I calculated your calculation. Twice.",
+
+        "This is why calculators were invented."
+
+    ];
+
+
+    const roast =
+        roasts[
+            Math.floor(
+                Math.random() *
+                roasts.length
+            )
+        ];
+
+
+    setMessage(
+        "🔥",
+        roast
     );
 
 
-/* =====================================
+    shakeCalculator();
+}
+
+
+/* =================================
+   RANDOM CALCULATION
+================================= */
+
+function randomMath() {
+
+    const a =
+        Math.floor(
+            Math.random() * 100
+        ) + 1;
+
+    const b =
+        Math.floor(
+            Math.random() * 100
+        ) + 1;
+
+
+    const operators = [
+        "+",
+        "-",
+        "*"
+    ];
+
+
+    const operator =
+        operators[
+            Math.floor(
+                Math.random() *
+                operators.length
+            )
+        ];
+
+
+    expression =
+        `${a}${operator}${b}`;
+
+    answer =
+        expression;
+
+
+    updateDisplay();
+
+
+    setMessage(
+        "🎲",
+        "You didn't choose the math. The math chose you."
+    );
+
+
+    setTimeout(
+        calculate,
+        500
+    );
+}
+
+
+/* =================================
+   HISTORY
+================================= */
+
+function addHistory(
+    equation,
+    result
+) {
+
+    history.unshift({
+
+        equation: equation,
+
+        result: result
+
+    });
+
+
+    if (history.length > 5) {
+
+        history.pop();
+
+    }
+
+
+    renderHistory();
+}
+
+
+/* =================================
+   RENDER HISTORY
+================================= */
+
+function renderHistory() {
+
+    if (history.length === 0) {
+
+        historyList.innerHTML =
+            `<p class="empty">
+                No bad decisions yet...
+            </p>`;
+
+        return;
+    }
+
+
+    historyList.innerHTML =
+        history.map(
+            item => `
+
+            <div class="history-item">
+
+                <span>
+                    ${item.equation}
+                </span>
+
+                <span class="result">
+                    = ${item.result}
+                </span>
+
+            </div>
+
+        `
+        ).join("");
+}
+
+
+/* =================================
+   CLEAR HISTORY
+================================= */
+
+function clearHistory() {
+
+    history = [];
+
+    renderHistory();
+
+    setMessage(
+        "🗑️",
+        "Evidence successfully destroyed."
+    );
+}
+
+
+/* =================================
+   SHAKE
+================================= */
+
+function shakeCalculator() {
+
+    const calculator =
+        document.querySelector(
+            ".calculator"
+        );
+
+
+    calculator.classList.remove(
+        "shake"
+    );
+
+
+    void calculator.offsetWidth;
+
+
+    calculator.classList.add(
+        "shake"
+    );
+}
+
+
+/* =================================
    KEYBOARD SUPPORT
-===================================== */
+================================= */
 
 document.addEventListener(
     "keydown",
-    event => {
+    function(event) {
 
-        const key = event.key;
+        const key =
+            event.key;
 
-
-        /* Numbers/operators */
 
         if (
-            "0123456789.+-*/%()"
-                .includes(key)
+            key >= "0" &&
+            key <= "9"
         ) {
 
-            addValue(key);
+            appendNumber(key);
 
         }
 
 
-        /* Enter */
+        else if (
+            key === "."
+        ) {
 
-        if (key === "Enter") {
-
-            calculateWithPython();
+            appendNumber(".");
 
         }
 
 
-        /* Escape */
+        else if (
+            ["+", "-", "*", "/", "%"]
+            .includes(key)
+        ) {
 
-        if (key === "Escape") {
+            appendOperator(key);
 
-            expression = "";
+        }
 
-            updateDisplay();
+
+        else if (
+            key === "Enter" ||
+            key === "="
+        ) {
+
+            calculate();
+
+        }
+
+
+        else if (
+            key === "Backspace"
+        ) {
+
+            deleteLast();
+
+        }
+
+
+        else if (
+            key === "Escape"
+        ) {
+
+            clearCalculator();
 
         }
 
     }
 );
+
+
+/* =================================
+   START
+================================= */
+
+updateDisplay();
+
+renderHistory();
