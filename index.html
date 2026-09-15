@@ -4,86 +4,155 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Python Scientific Calculator</title>
+    <title>Math Bro 💀</title>
 
     <link rel="stylesheet" href="style.css">
-
-    <!-- Pyodide: runs Python in the browser -->
-    <script src="https://cdn.jsdelivr.net/pyodide/v0.27.2/full/pyodide.js"></script>
 </head>
 
 <body>
 
     <main class="calculator">
 
-        <!-- Display -->
-        <section class="display">
-            <div class="history" id="history"></div>
-            <div class="screen" id="screen">0</div>
+        <!-- HEADER -->
+        <header class="top">
+            <div>
+                <p class="eyebrow">CALCULATOR.EXE</p>
+                <h1>Math Bro 💀</h1>
+            </div>
+
+            <div class="status">
+                <span class="dot"></span>
+                ALIVE
+            </div>
+        </header>
+
+
+        <!-- FUNNY MESSAGE -->
+        <section class="message-box">
+            <span id="emoji">🤨</span>
+
+            <p id="message">
+                What are you calculating now?
+            </p>
         </section>
 
-        <!-- Calculator buttons -->
+
+        <!-- DISPLAY -->
+        <section class="display">
+
+            <div id="expression" class="expression">
+                0
+            </div>
+
+            <div id="answer" class="answer">
+                0
+            </div>
+
+        </section>
+
+
+        <!-- CALCULATOR BUTTONS -->
         <section class="buttons">
 
-            <!-- Row 1 -->
-            <button class="function" id="angle">Deg</button>
-            <button class="function" id="rad">Rad</button>
-            <button class="function" data-value="factorial">x!</button>
-            <button class="function" data-value="(">(</button>
-            <button class="function" data-value=")">)</button>
-            <button class="function" data-value="%">%</button>
-            <button class="clear" id="clear">AC</button>
+            <button class="special" onclick="clearCalculator()">
+                C
+            </button>
 
-            <!-- Row 2 -->
-            <button class="function" data-value="inv">Inv</button>
-            <button class="function" data-value="sin">sin</button>
-            <button class="function" data-value="ln">ln</button>
+            <button class="special" onclick="deleteLast()">
+                ←
+            </button>
 
-            <button class="number" data-value="7">7</button>
-            <button class="number" data-value="8">8</button>
-            <button class="number" data-value="9">9</button>
-            <button class="operator" data-value="/">÷</button>
+            <button class="operator" onclick="appendOperator('%')">
+                %
+            </button>
 
-            <!-- Row 3 -->
-            <button class="function" data-value="pi">π</button>
-            <button class="function" data-value="cos">cos</button>
-            <button class="function" data-value="log">log</button>
+            <button class="operator" onclick="appendOperator('/')">
+                DIV
+            </button>
 
-            <button class="number" data-value="4">4</button>
-            <button class="number" data-value="5">5</button>
-            <button class="number" data-value="6">6</button>
-            <button class="operator" data-value="*">×</button>
 
-            <!-- Row 4 -->
-            <button class="function" data-value="e">e</button>
-            <button class="function" data-value="tan">tan</button>
-            <button class="function" data-value="sqrt">√</button>
+            <button onclick="appendNumber('7')">7</button>
+            <button onclick="appendNumber('8')">8</button>
+            <button onclick="appendNumber('9')">9</button>
 
-            <button class="number" data-value="1">1</button>
-            <button class="number" data-value="2">2</button>
-            <button class="number" data-value="3">3</button>
-            <button class="operator" data-value="-">−</button>
+            <button class="operator" onclick="appendOperator('*')">
+                ×
+            </button>
 
-            <!-- Row 5 -->
-            <button class="function" data-value="ans">Ans</button>
-            <button class="function" data-value="exp">EXP</button>
-            <button class="function" data-value="power">xʸ</button>
 
-            <button class="number" data-value="0">0</button>
-            <button class="number" data-value=".">.</button>
+            <button onclick="appendNumber('4')">4</button>
+            <button onclick="appendNumber('5')">5</button>
+            <button onclick="appendNumber('6')">6</button>
 
-            <button class="equals" id="equals">=</button>
+            <button class="operator" onclick="appendOperator('-')">
+                −
+            </button>
 
-            <button class="operator" data-value="+">+</button>
+
+            <button onclick="appendNumber('1')">1</button>
+            <button onclick="appendNumber('2')">2</button>
+            <button onclick="appendNumber('3')">3</button>
+
+            <button class="operator" onclick="appendOperator('+')">
+                +
+            </button>
+
+
+            <button class="zero" onclick="appendNumber('0')">
+                0
+            </button>
+
+            <button onclick="appendNumber('.')">
+                .
+            </button>
+
+            <button class="equals" onclick="calculate()">
+                DO THE MATH 🧠
+            </button>
 
         </section>
 
-        <!-- Python loading status -->
-        <div class="python-status" id="status">
-            Loading Python...
-        </div>
+
+        <!-- FUNNY ACTIONS -->
+        <section class="fun-buttons">
+
+            <button onclick="roastMe()">
+                🔥 ROAST MY MATH
+            </button>
+
+            <button onclick="randomMath()">
+                🎲 I'M FEELING LUCKY
+            </button>
+
+        </section>
+
+
+        <!-- HISTORY -->
+        <section class="history">
+
+            <div class="history-header">
+                <h2>History of Bad Decisions 💀</h2>
+
+                <button onclick="clearHistory()">
+                    CLEAR
+                </button>
+            </div>
+
+            <div id="historyList">
+                <p class="empty">
+                    No bad decisions yet...
+                </p>
+            </div>
+
+        </section>
+
+
+        <footer>
+            Made with questionable mathematical decisions.
+        </footer>
 
     </main>
+
 
     <script src="script.js"></script>
 
